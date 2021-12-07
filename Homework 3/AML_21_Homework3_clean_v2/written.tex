@@ -1,0 +1,61 @@
+
+\section*{Written Exercises}
+
+\begin{enumerate}
+
+\item \textbf{SVD and eigendecomposition. (10 pts)}
+% You implemented a programming version of SVD in the programming section, now let's build a mathematical understanding of it. In the real number case, let's consider a matrix $X$ with $m \times n$ dimensions. 
+Recall that the SVD of an $m \times n$ matrix $X$ is the factorization of $X$ into three matrices $X=UDV^{T}$, where $U$ is a $m \times m$ orthonormal matrix, $D$ is a $m \times n$ diagonal matrix with non-negative real numbers on the diagonal, and $V$ is a $n \times n$ orthonormal matrix. An orthonormal matrix just means that $U^{T}U = I$ and $V^{T}V = I$.
+
+Show that we can obtain the eigendecomposition of $X^TX$ from the SVD of a matrix $X$. 
+
+
+(This tells us that we can do an SVD of $X$ and get same result as the eigendecomposition of $X^TX$ but the SVD is faster and easier.)
+
+% \item \textbf{Weights for clustering.}
+% In clustering algorithms like K-means, we need to compute distances in the feature space.
+% Sometimes people use weights to value some feature more than others.
+% Show that weighted Euclidean distance for $p$ dimensional data points $x_i$ and $x_{i'}$
+% \begin{equation}
+%     d_e^{(w)}(x_i,x_{i'}) = \frac{\sum_{l=1}^p w_l(x_{il} - x_{i' l})^2}{\sum_{l=1}^p w_l}
+% \end{equation}
+% satisfies
+% \begin{equation}
+%     d_e^{(w)}(x_i,x_{i'}) = d_e(z_i,z_{i'}) = \sum_{l=1}^p (z_{il} - z_{i'l})^2,
+% \end{equation}
+% where
+% \begin{equation}
+%     z_{il} = x_{il} \cdot \left (\frac{w_l}{\sum_{l=1}^p w_l} \right )^{1/2}.
+% \end{equation}
+% Thus weighted Euclidean distance based on $x$ is equivalent to unweighted Euclidean distance based on a proper transformed data $z$.
+
+% \item \textbf{SVD of Rank Deficient Matrix. (10 pts)}
+% You can use NumPy library for this problem. 
+% % it’s an extreme example of dimensionality reduction where the dimensionality d=3 is fully redundant and can be completely captured by p=2 
+% In this extreme example of dimensionality reduction, we are going to see the original data's dimensionality is redundant and can be completely captured by lower dimensions.
+% Consider matrix $M$. It has rank 2, as you can see by observing that there times the first column minus the other two columns is 0.
+% \begin{equation}
+%   M = \left[
+%     \begin{matrix}
+% 1 & 0 & 3 \\
+% 3 & 7 & 2 \\
+% 2 & -2 & 8 \\
+% 0 & -1 & 1 \\
+% 5 & 8 & 7
+%     \end{matrix}
+%   \right] .
+% \end{equation}
+
+% \begin{enumerate}
+%   \item Compute the matrices $M^TM$ and $MM^T$.
+%   \item Find the eigenvalues for your matrices of part (a).
+%   \item Find the eigenvectors for the matrices of part (a).
+%   \item Find the SVD for the original matrix M from parts (b) and (c). Note that there are only two nonzero eigenvalues, so your matrix $\Sigma$ should have only two singular values, while $U$ and $V$ have only two columns.
+%   \item 
+% %   Set your smaller singular value to 0 and compute the one-dimensional approximation to the matrix $M$.
+%   There are 2 non-zero singular values, if we only keep one by setting the smaller singular value to 0 , then the data will be represented in 1D only. 
+%   Compute such one-dimensional approximation to $M$.
+% \end{enumerate}
+
+
+\end{enumerate}

@@ -1,0 +1,97 @@
+% Cornell CS5785 homework/quiz template.
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+% Revised by Michael Wilber, Xun Huang
+% Revised by Jin Sun, 2020
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[letterpaper,12pt]{article}
+\usepackage{fourier} % Nicer font
+\usepackage{listings}
+\usepackage[top=0.7in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage[english]{babel} % Nicer hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{sectsty} % Allows customizing section commands
+\usepackage[normalem]{ulem}
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+% \newcommand{\todo}{\colorbox{yellow}{\fbox{\LARGE{TODO}}}\vspace{1in}}
+\newcommand{\todo}{\colorbox{yellow}{\fbox{\LARGE{TODO}}}}
+\newcommand{\blank}[1]{\uline{\phantom{?}\hspace{#1}}}
+\newcommand{\truefalse}{\hspace{2ex}\textbf{True}~or~\textbf{False}?}
+\usepackage{fancyhdr}
+\usepackage{framed}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+\pagestyle{fancy} % Use a custom header for all pages...
+\thispagestyle{empty} % except the first page
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\usepackage{hyperref}
+\usepackage{minted} %highlight code
+\newtheorem{theorem}{Theorem}
+
+
+\newcommand\zhaonotes[1]{\textcolor{orange}{#1}}
+\newcommand\vk[1]{\textcolor{red}{#1}}
+
+% display math with correct format
+\everymath{\displaystyle}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\lstset{ %
+  basicstyle=\tt,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  commentstyle=\color{mygreen},    % comment style
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Python,                 % the language of the code
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+}
+
+
+\title{Homework 3}
+
+% Fill in your name and Cornell NetID on the line below:
+\author{ Yiran Zhao }
+
+% More junk, skip down to the document body:
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\fancyhead[R]{Page \thepage} % Set headings and footer
+\fancyhead[L]{CS5785 Fall 2021: \@title}
+\fancyhead[C]{}
+\makeatother
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+% Due date for this homework
+\newcommand{\hwname}{Homework 3}
+\newcommand{\hwduedate}{Oct 14, 2021 at 11:59 PM ET}
+
+\begin{document}
+
+% Title page
+\input{title_page}
+\input{programming}
+\input{written}
+
+
+\end{document}

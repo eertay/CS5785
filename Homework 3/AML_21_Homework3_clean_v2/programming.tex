@@ -1,0 +1,110 @@
+\section*{Programming Exercises}
+
+\begin{enumerate}
+
+\item \textbf{Eigenface for face recognition. (40 pts)}
+
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=0.8\textwidth]{hw4/YaleB.jpg}
+% \end{figure}
+
+In this assignment you will implement the Eigenface method for recognizing human faces. You will use face images from \textit{The Yale Face Database B}, where there are $64$ images under different lighting conditions per each of $10$ distinct subjects, $640$ face images in total.
+
+\textbf{Read more (optional):}
+\begin{itemize}
+\item Eigenface on Wikipedia: \url{https://en.wikipedia.org/wiki/Eigenface}
+\item Eigenface on Scholarpedia: \url{http://www.scholarpedia.org/article/Eigenfaces}
+\end{itemize}
+
+\begin{enumerate}
+\item \textbf{(2 pts)} Download \href{http://cornelltech.github.io/cs5785-fall-2019/data/faces.zip}{The Face Dataset} and unzip \verb!faces.zip!,
+You will find a folder called \emph{images} which contains all the training and test images; \emph{train.txt} and \emph{test.txt} specifies the training set and test (validation) set split respectively, each line gives an image path and the corresponding label.
+
+\item \textbf{(2 pts)} Load the training set into a matrix $\mathbf{X}$: there are $540$ training images in total, each has $50 \times 50$ pixels that need to be concatenated into a $2500$-dimensional vector. So the size of $\mathbf{X}$ should be $540 \times 2500$, where each row is a flattened face image. Pick a face image from $\mathbf{X}$ and display that image in grayscale. Do the same thing for the test set. The size of matrix $\mathbf{X_{test}}$ for the test set should be $100 \times 2500$.
+
+Below is the sample code for loading data from the training set. You can directly run it in Jupyter Notebook:
+\begin{minted}
+[frame=lines,
+framesep=2mm,
+baselinestretch=1.0,
+fontsize=\footnotesize,
+linenos]
+{python}
+import numpy as np
+from scipy import misc
+from matplotlib import pylab as plt
+import matplotlib.cm as cm
+%matplotlib inline
+
+train_labels, train_data = [], []
+for line in open('./faces/train.txt'):
+    im = misc.imread(line.strip().split()[0])
+    train_data.append(im.reshape(2500,))
+    train_labels.append(line.strip().split()[1])
+train_data, train_labels = np.array(train_data, dtype=float), np.array(train_labels, dtype=int)
+
+print train_data.shape, train_labels.shape
+plt.imshow(train_data[10, :].reshape(50,50), cmap = cm.Greys_r)
+plt.show()
+\end{minted}
+
+\item \textbf{(3 pts)} Average Face. Compute the \emph{average face} $\mathbf{\mu}$ from the whole training set by summing up every row in $\mathbf{X}$ then dividing by the number of faces. Display the \emph{average face} as a grayscale image.
+
+\item \textbf{(3 pts)} Mean Subtraction. Subtract average face $\mathbf{\mu}$ from every row in $\mathbf{X}$. That is, $\mathbf{x_i} := \mathbf{x_i} - \mathbf{\mu}$, where $\mathbf{x_i}$ is the $i$-th row of $\mathbf{X}$. Pick a face image after mean subtraction from the new $\mathbf{X}$ and display that image in grayscale. Do the same thing for the test set $\mathbf{X_{test}}$ using the pre-computed average face $\mathbf{\mu}$ in (c).
+
+
+\item \textbf{(10 pts)} Eigenface. Perform eigendecomposition on $\mathbf{X}^T\mathbf{X} = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^T$ to get eigenvectors $\mathbf{V}^T$,
+where each row of $\mathbf{V}^T$ has the same dimension as the face image.
+We refer to $\mathbf{v_i}$, the $i$-th row of $\mathbf{V}^T$, as $i$-th \emph{eigenface}.
+Display the first $10$ eigenfaces as $10$ images in grayscale.
+
+\item \textbf{(10 pts)} Eigenface Feature. The top $r$ eigenfaces $\mathbf{V}^T[:r, :] = \{ v_1, v_2, \dots, v_r \}^T$ span an $r$-dimensional linear subspace of the original image space called \emph{face space}, whose origin is the average face $\mathbf{\mu}$, and whose axes are the eigenfaces $\{ v_1, v_2, \dots, v_r \}$.
+Therefore, using the top $r$ eigenfaces $\{ v_1, v_2, \dots, v_r \}$, we can represent a $2500$-dimensional face image $\mathbf{z}$ as an $r$-dimensional feature vector $\mathbf{f}$: $\mathbf{f} = \mathbf{V}^T[:r, :]~ \mathbf{z} = [v_1, v_2, \dots, v_r]^T \mathbf{z}$.
+Write a function to generate $r$-dimensional feature matrix $\mathbf{F}$ and $\mathbf{F_{test}}$ for training images $\mathbf{X}$ and test images $\mathbf{X_{test}}$, respectively (to get $\mathbf{F}$, multiply $\mathbf{X}$ to the transpose of first $r$ rows of $\mathbf{V}^T$, $\mathbf{F}$ should have same number of rows as $\mathbf{X}$ and $r$ columns; similarly for $\mathbf{X_{test}}$).
+
+\item \textbf{(10 pts)} \label{part:facerec} Face Recognition. For this problem, you are welcome to use libraries such as \texttt{scikit learn} to perform logistic regression. Extract training and test features for $r=10$. Train a Logistic Regression model using $\mathbf{F}$ and test on $\mathbf{F_{test}}$. Report the classification accuracy on the test set. Plot the classification accuracy on the test set as a function of $r$ when $r = 1, 2, \dots, 200$. Use ``one-vs-rest'' logistic regression, where a classifier is trained for each possible output label. Each classifier is trained on faces with that label as positive data and all faces with other labels as negative data. \verb+sklearn+ calls this the ``ovr'' mode.
+
+\end{enumerate}
+
+
+\item \textbf{Implement EM algorithm. (40 pts)}
+In this problem, you will implement a bimodal GMM model fit using the EM algorithm. Bimodal means that the distribution has two peaks, or that the data is a mixture of two groups. If you want, you can assume the covariance matrix is diagonal (i.e. it has the form $\text{diag}(\sigma_1^2,\sigma_2^2,...,\sigma_d^2)$ for scalars $\sigma_i$) and you can randomly initialize the parameters of the model. 
+
+You will need to use the \href{http://www.stat.cmu.edu/~larry/all-of-statistics/=data/faithful.dat}{Old Faithful Geyser Dataset}. The data file contains 272 observations of the waiting time between eruptions and the duration of each eruption for the Old Faithful geyser in Yellowstone National Park.
+
+You should do this without calling the \href{https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture}{Gaussian Mixture} library in \texttt{scikit learn}. You can use \texttt{numpy} or \texttt{scipy} for matrix calculation or generating Gaussian distributions. 
+
+\begin{enumerate}
+\item (\textbf{2 pts}) Treat each data entry as a 2 dimensional feature vector. Parse and plot all data points on 2-D plane. 
+
+\item (\textbf{3 pts}) Recall that EM learns the parameter $\theta$ of a Gaussian mixture model $P_{\theta}(x, z)$ over a dataset $D = \{x^{(i)} | i = 1, 2, ... n\}$ by performing the E-step and the M-step for $t=0,1,2,\ldots$. We repeat the E-step and and M-step until convergence.
+
+In the E-step, for each $x^{(i)} \in D$, we compute a vector of probabilities $P_{\theta_t}(z = k\mid x)$ for the event that each $x^{(i)}$ originates from a cluster $k$ given the current set of parameters $\theta_{t}$. 
+
+Write the expression for $P_{\theta_t}(z = k\mid x)$, which is the posterior of each data point $x^{(i)}$. Recall that by  Bayes' rule, 
+$$
+P_{\theta_t}(z = k\mid x) 
+= \frac{P_{\theta_t}(z=k, x)}{P_{\theta_t}(x)}
+= \frac{P_{\theta_t}(z=k, x)}{\sum_{l = 1}^{K} P_{\theta_t}{(x | z = l)} P_{\theta_t}{(z = l)}}.
+$$
+
+Note that we have seen this formula in class. We are asking you to write it down and try to understand and it before implementing it in part (e).
+
+\item (\textbf{5 pts})  In the M-step, we compute new parameters $\theta_{t+1}$. Our goal is to find $\mu_k, \Sigma_k$ and $\phi_{k}$ that optimize
+$$\max_\theta \left(\sum_{k = 1}^{K} \sum_{x \in D} P_{\theta_t}(z_{k}|x) \log P_{\theta}(x|z_{k}) +  \sum_{k = 1}^{K} \sum_{x \in D} P_{\theta_t}(z_{k}|x) \log P_\theta(z_{k})\right) $$
+
+Write down the formula for $\mu_k$, $\Sigma_k$, and for the parameters $\phi$ at the M-step (we have also seen these formulas in class).
+
+\item (\textbf{25 pts}) Implement and run the EM algorithm. The points in this question is given by:
+\begin{enumerate}
+    \item (\textbf{10 pts}) EM implementation. 
+    \item (\textbf{5 pts}) You will also need to choose a termination criterion for when the algorithm stops repeating the E-step and the M-step (e.g., a convergence threshold). State your termination criterion and explain the reasoning behind it. 
+    \item (\textbf{10 pts}) Plot the trajectories of the two mean vectors ($\mu_1$ and $\mu_2$) in 2 dimensions to show how they change over the course of running EM. You might want to use a scatter plot for this.
+\end{enumerate} 
+
+\item (\textbf{5 pts}) If you run $K$-means clustering instead of the EM algorithm you just implemented, do you think you will get different clusters? You are welcome to experiment with $K$-means clustering on the same dataset with $K=2$. (The \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{K-means} library from \texttt{scikit learn} is a good way to try). Comment on why do you think the results will or will not change. .
+
+\end{enumerate}
+\end{enumerate}
+
